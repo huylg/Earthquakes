@@ -13,6 +13,7 @@ struct Quake {
     let time: Date
     let code: String
     let detail: URL
+    let tsunami: Int
 }
 
 extension Quake: Identifiable {
@@ -26,6 +27,7 @@ extension Quake: Codable {
         case time
         case code
         case detail
+        case tsunami
     }
 
     init(from deconder: Decoder) throws {
@@ -35,16 +37,18 @@ extension Quake: Codable {
         let time = try? values.decode(Date.self, forKey: .time)
         let code = try? values.decode(String.self, forKey: .code)
         let detail = try? values.decode(URL.self, forKey: .detail)
+        let tsunami = try? values.decode(Int.self, forKey: .tsunami)
 
         guard let magnitude,
               let place,
               let time,
               let code,
-              let detail
+              let detail,
+              let tsunami
         else {
             throw QuakeError.missingData
         }
 
-        self.init(magnitude: magnitude, place: place, time: time, code: code, detail: detail)
+        self.init(magnitude: magnitude, place: place, time: time, code: code, detail: detail, tsunami: tsunami)
     }
 }
