@@ -12,7 +12,6 @@ struct Quakes: View {
     var lastUpdated = Date.distantFuture.timeIntervalSince1970
 
     @EnvironmentObject var provider: QuakesProvider
-    @State var quakes = [Quake]()
     @State var editMode: EditMode = .inactive
     @State var selectMode: SelectMode = .inactive
     @State var isLoading = false
@@ -23,18 +22,21 @@ struct Quakes: View {
     var body: some View {
         NavigationView {
             List(selection: $selection) {
-                ForEach(quakes) {
-                    Text($0.place)
+                ForEach(provider.quakes) {
+                    QuakeRow(quake: $0)
                 }
             }
             .listStyle(.inset)
             .navigationTitle(title)
             .refreshable {
-                fetchQuakes()
+                await fetchQuakes()
             }
-            .onAppear {
-                fetchQuakes()
+            .alert(isPresented: $hasError, error: error) {
+                
             }
+        }
+        .task {
+            await fetchQuakes()
         }
     }
 }
@@ -44,9 +46,25 @@ extension Quakes {
         !selectMode.isActive || selection.isEmpty ? "Earthquakes" : "\(selection.count) selected"
     }
 
-    func fetchQuakes() {
+    func deleteQuakes(at offsets: IndexSet) {
+        provider.quakes.remove(atOffsets: offsets)
+    }
+
+    func deleteQuakes(for codes: Set<String>) {
+        let offsetsToDelete = IndexSet(provider.quakes.enumerated().filter { codes.contains($1.code) }.map { index, _ in index })
+        deleteQuakes(at: offsetsToDelete)
+        selection.removeAll()
+    }
+
+    func fetchQuakes() async {
         isLoading = true
-        quakes = staticData
+        do {
+            try await provider.fetchQuakes()
+            lastUpdated = Date().timeIntervalSince1970
+        } catch {
+            self.error = error as? QuakeError ?? .unexpectedError(error: error)
+            hasError = true
+        }
         lastUpdated = Date().timeIntervalSince1970
         isLoading = false
     }
@@ -69,6 +87,6 @@ let staticData = [
 
 struct Quakes_Previews: PreviewProvider {
     static var previews: some View {
-        Quakes()
+        Quakes().environmentObject(QuakesProvider(client: QuakeClient(downloader: TestDownloader())))
     }
 }

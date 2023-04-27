@@ -14,7 +14,7 @@ else
   set shortmess=aoO
 endif
 badd +1 ~/personal/Earthquakes
-badd +12 Earthquakes/Models/QuakeError.swift
+badd +24 Earthquakes/Models/QuakeError.swift
 badd +47 Earthquakes/Models/QuakeLocation.swift
 badd +17 EarthquakesTests/TestData.swift
 badd +53 Earthquakes/EarthquakesTests/EarthquakesTests.swift
@@ -25,21 +25,25 @@ badd +15 Earthquakes/Network/HTTPDataDownloader.swift
 badd +2 Earthquakes/Preview\ Content/TestDownloader.swift
 badd +9 ~/Library/Developer/Xcode/DerivedData/Earthquakes-aumncijkgleuukdthnsgneukscws/Build/Intermediates.noindex/Earthquakes.build/Debug-iphonesimulator/Earthquakes.build/Objects-normal/arm64/Earthquakes.SwiftFileList
 badd +1 ~/Library/Developer/Xcode/DerivedData/Earthquakes-aumncijkgleuukdthnsgneukscws/Build/Intermediates.noindex/Earthquakes.build/Debug-iphonesimulator/EarthquakesTests.build/Objects-normal/arm64/EarthquakesTests.SwiftFileList
-badd +31 Earthquakes/Views/Quakes.swift
+badd +77 Earthquakes/Views/Quakes.swift
 badd +1 https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/nc73649170.geojson
 badd +1 https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/hv72783692
 badd +37 Earthquakes/Views/SelectButton.swift
 badd +1947 ~/.local/state/nvim/lsp.log
 badd +8 ~/Library/Developer/Xcode/DerivedData/Earthquakes-aumncijkgleuukdthnsgneukscws/Build/Intermediates.noindex/Previews/Earthquakes/Intermediates.noindex/Earthquakes.build/Debug-iphonesimulator/Earthquakes.build/Objects-normal/arm64/Earthquakes.SwiftFileList
-badd +35 Earthquakes/Views/ToolbarContent/Quakes+Toolbar.swift
+badd +18 Earthquakes/Views/ToolbarContent/Quakes+Toolbar.swift
 badd +11 Earthquakes/Views/ToolbarContent/EditButton.swift
 badd +37 Earthquakes/Views/ToolbarContent/ToolbarStatus.swift
+badd +14 Earthquakes/Views/ToolbarContent/DeleteButton.swift
+badd +18 Earthquakes/Views/QuakeRow.swift
+badd +24 Earthquakes/Views/QuakeMagnitude.swift
+badd +22 Earthquakes/QuakeProvider.swift
 argglobal
 %argdel
 $argadd ~/personal/Earthquakes
-edit Earthquakes/Views/ToolbarContent/Quakes+Toolbar.swift
+edit Earthquakes/QuakeProvider.swift
 argglobal
-balt Earthquakes/Views/ToolbarContent/ToolbarStatus.swift
+balt Earthquakes/Views/ToolbarContent/Quakes+Toolbar.swift
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -50,12 +54,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 35 - ((34 * winheight(0) + 33) / 67)
+let s:l = 17 - ((16 * winheight(0) + 39) / 79)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
-normal! 017|
+keepjumps 17
+normal! 031|
 lcd ~/personal/Earthquakes
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
