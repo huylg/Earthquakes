@@ -22,8 +22,13 @@ struct Quakes: View {
     var body: some View {
         NavigationView {
             List(selection: $selection) {
-                ForEach(provider.quakes) {
-                    QuakeRow(quake: $0)
+                ForEach(provider.quakes) { quake in
+                    NavigationLink {
+                        QuakeDetail(quake: quake)
+                    } label: {
+                        QuakeRow(quake: quake)
+                    }
+
                 }
             }
             .listStyle(.inset)

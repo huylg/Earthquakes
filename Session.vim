@@ -14,13 +14,13 @@ else
   set shortmess=aoO
 endif
 badd +1 ~/personal/Earthquakes
-badd +24 Earthquakes/Models/QuakeError.swift
-badd +47 Earthquakes/Models/QuakeLocation.swift
+badd +11 Earthquakes/Models/QuakeError.swift
+badd +10 Earthquakes/Models/QuakeLocation.swift
 badd +17 EarthquakesTests/TestData.swift
 badd +53 Earthquakes/EarthquakesTests/EarthquakesTests.swift
 badd +8 .compile
 badd +15 Earthquakes/HTTPDataDownloader.swift
-badd +14 Earthquakes/Network/QuakeClient.swift
+badd +58 Earthquakes/Network/QuakeClient.swift
 badd +15 Earthquakes/Network/HTTPDataDownloader.swift
 badd +2 Earthquakes/Preview\ Content/TestDownloader.swift
 badd +9 ~/Library/Developer/Xcode/DerivedData/Earthquakes-aumncijkgleuukdthnsgneukscws/Build/Intermediates.noindex/Earthquakes.build/Debug-iphonesimulator/Earthquakes.build/Objects-normal/arm64/Earthquakes.SwiftFileList
@@ -37,13 +37,34 @@ badd +37 Earthquakes/Views/ToolbarContent/ToolbarStatus.swift
 badd +14 Earthquakes/Views/ToolbarContent/DeleteButton.swift
 badd +18 Earthquakes/Views/QuakeRow.swift
 badd +24 Earthquakes/Views/QuakeMagnitude.swift
-badd +22 Earthquakes/QuakeProvider.swift
+badd +26 Earthquakes/QuakeProvider.swift
+badd +40 Earthquakes/Models/Quake.swift
+badd +17 Earthquakes/Models/Quake+Preview.swift
+badd +18 Earthquakes/Views/QuakeDetail.swift
+badd +26 Earthquakes/Views/QuakeDetailMap.swift
 argglobal
 %argdel
 $argadd ~/personal/Earthquakes
-edit Earthquakes/QuakeProvider.swift
+edit Earthquakes/Views/QuakeDetail.swift
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+wincmd =
 argglobal
-balt Earthquakes/Views/ToolbarContent/Quakes+Toolbar.swift
+balt Earthquakes/Views/QuakeDetailMap.swift
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -54,13 +75,40 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 17 - ((16 * winheight(0) + 39) / 79)
+let s:l = 24 - ((11 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 17
-normal! 031|
+keepjumps 24
+normal! 045|
 lcd ~/personal/Earthquakes
+wincmd w
+argglobal
+if bufexists(fnamemodify("~/personal/Earthquakes/Earthquakes/Views/QuakeDetailMap.swift", ":p")) | buffer ~/personal/Earthquakes/Earthquakes/Views/QuakeDetailMap.swift | else | edit ~/personal/Earthquakes/Earthquakes/Views/QuakeDetailMap.swift | endif
+if &buftype ==# 'terminal'
+  silent file ~/personal/Earthquakes/Earthquakes/Views/QuakeDetailMap.swift
+endif
+balt ~/personal/Earthquakes/Earthquakes/Views/QuakeDetail.swift
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 26 - ((25 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 26
+normal! 020|
+lcd ~/personal/Earthquakes
+wincmd w
+2wincmd w
+wincmd =
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -68,6 +116,8 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
